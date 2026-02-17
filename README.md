@@ -151,38 +151,95 @@ See [CODE_EXECUTION_SETUP.md](CODE_EXECUTION_SETUP.md) for detailed instructions
 - Analytics summaries
 - Professional formatting
 
-## � Deployment to Vercel
+## 🚀 Deployment
 
-### Frontend Deployment
+### Prerequisites
+1. Push your code to GitHub: `git push origin main`
+2. Get your Groq API key from: https://console.groq.com/
 
-1. **Push to GitHub** (`.env` won't be uploaded - it's in `.gitignore`)
+---
 
-2. **Import to Vercel**: Visit https://vercel.com/new
+### 🎯 Deploy Backend to Railway
 
-3. **Configure Environment Variables** in Vercel Dashboard:
-   - Navigate to: Project Settings → Environment Variables
-   - Add `VITE_GROQ_API_KEY` with your Groq API key
-   - Add `VITE_CODE_EXECUTION_URL` with your backend URL (if deploying backend)
+1. **Visit Railway**: https://railway.app/
+2. **Sign in** with GitHub
+3. **New Project** → **Deploy from GitHub repo**
+4. **Select Repository**: `sithumSoft/MockMate`
+5. **Configure Service**:
+   - Click on the service → Settings
+   - **Root Directory**: `server`
+   - **Start Command**: `npm start` (auto-detected)
+6. **Deploy** - Railway will automatically deploy
+7. **Get Backend URL**: 
+   - Go to Settings → Networking
+   - Copy the public URL (e.g., `https://mockmate-backend.up.railway.app`)
 
-4. **Deploy**: Vercel will automatically build and deploy your app
+**✅ Test Backend**: Visit `https://your-backend-url.railway.app/api/health`
 
-### Backend Deployment (Optional - for Code Editor)
+---
 
-Deploy the `server/` directory to:
-- **Render**: https://render.com (Recommended, has free tier)
-- **Railway**: https://railway.app
-- **Heroku**: https://heroku.com
+### 🌐 Deploy Frontend to Vercel
 
-Then update `VITE_CODE_EXECUTION_URL` in Vercel with your backend URL.
+1. **Visit Vercel**: https://vercel.com/new
+2. **Import Git Repository**: Select `sithumSoft/MockMate`
+3. **Configure Project**:
+   - **Framework Preset**: Vite (auto-detected)
+   - **Root Directory**: `./` (leave as root)
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+4. **Environment Variables** (IMPORTANT - Add these):
+   ```
+   VITE_GROQ_API_KEY=your_groq_api_key_here
+   VITE_CODE_EXECUTION_URL=https://your-backend-url.railway.app/api
+   ```
+5. **Deploy** - Vercel will build and deploy your app
 
-### Important Deployment Notes
+**✅ Test Frontend**: Visit your Vercel URL (e.g., `https://mockmate.vercel.app`)
 
-- ✅ **Users will access AI features using YOUR API key**
-- ⚠️ **Monitor API Usage**: Check https://console.groq.com/usage regularly
-- 💡 **Rate Limiting**: Consider implementing if expecting high traffic
-- 🔒 **Never commit `.env`**: Already protected by `.gitignore`
+---
 
-## �🔒 Security Note
+### 🔄 Update Backend CORS (Important!)
+
+After deploying to Vercel, update your backend:
+
+1. **Add Vercel URL to Railway Environment Variables**:
+   - Go to Railway dashboard → Your service → Variables
+   - Add: `FRONTEND_URL` = `https://mockmate.vercel.app` (your actual Vercel URL)
+2. Railway will automatically redeploy with the new CORS settings
+
+---
+
+### ⚠️ Important Deployment Notes
+
+- ✅ **Never commit `.env`** - Already protected by `.gitignore`
+- 📊 **Monitor API Usage**: https://console.groq.com/usage
+- 🔄 **Auto-Deploy**: Both platforms redeploy on `git push`
+- 🆓 **Free Tiers**:
+  - Vercel: Unlimited deployments, 100GB bandwidth/month
+  - Railway: 500 hours/month free (server may sleep after inactivity)
+
+---
+
+### 🐛 Troubleshooting
+
+**Backend not accessible**:
+- Check Railway logs for errors
+- Verify the service is running
+- Ensure PORT environment variable is set correctly (Railway auto-sets it)
+
+**Frontend can't connect to backend**:
+- Verify `VITE_CODE_EXECUTION_URL` in Vercel environment variables
+- Check browser console for CORS errors
+- Test backend health endpoint directly: `https://your-backend-url/api/health`
+
+**Code execution not working**:
+- JavaScript/Python should work on Railway
+- Java/C++/TypeScript may need additional setup (Railway installs Node.js and Python by default)
+- Check Railway logs for missing dependencies
+
+---
+
+## 🔒 Security Note
 
 ⚠️ The code execution backend is for **development/learning purposes only**. For production:
 - Implement sandboxing (Docker containers)
