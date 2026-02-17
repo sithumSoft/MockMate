@@ -11,8 +11,6 @@ import {
   MessageSquare, 
   Sparkles, 
   Loader2,
-  Server,
-  Database,
   ChevronDown,
   TrendingUp,
   Building2,

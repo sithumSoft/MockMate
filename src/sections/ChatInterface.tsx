@@ -340,30 +340,6 @@ export const ChatInterface = ({
                   </Card>
                 </div>
               </div>
-
-              {/* Ideal Answer Card */}
-              {evaluation.idealAnswer && (
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                    <Bot className="w-5 h-5 text-primary-foreground" />
-                  </div>
-                  <div className="flex-1">
-                    <Card className="border-l-4 border-l-yellow-500 bg-yellow-50 dark:bg-yellow-950 rounded-tl-none">
-                      <CardHeader className="pb-2">
-                        <CardTitle className="text-lg flex items-center gap-2">
-                          <Lightbulb className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
-                          <span className="text-yellow-900 dark:text-yellow-100">Ideal Answer</span>
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-yellow-900 dark:text-yellow-100 leading-relaxed whitespace-pre-line">
-                          {evaluation.idealAnswer}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-              )}
             </>
           )}
 
